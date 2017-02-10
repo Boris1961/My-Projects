@@ -1,8 +1,15 @@
 from flask import Flask, request
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 import requests
-import re
 
+
+def laminat33_ru(tag):
+    return [ tag.find('span').text , tag.find_next().find_next().find_all('meta')[0].attrs['content'] ]
+
+paths = {
+    'laminat33.ru': laminat33_ru
+}
 
 app = Flask(__name__)
 
@@ -10,8 +17,13 @@ app = Flask(__name__)
 def index():
 
     key_word = 'Balterio'
+    url = "https://laminat33.ru/category/laminat/balterio/"
 
-    response = requests.get("https://laminat33.ru/category/laminat/balterio/")
+    func = paths [ urlparse(url).netloc.lower() ]
+    if not func:
+        return
+
+    response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
 
     arr = soup.find_all('h5')
@@ -23,9 +35,8 @@ def index():
 
 
     for tag in need:
-        tg = tag.find('span').text
+        tg, cprice = func(tag)
         if tg != None:
-            cprice = tag.find_next().find_next().find_all('meta')[0].attrs['content']
             html_str += '<tr> <td> ' + tg + ' </td> <td>' + cprice + '</td> </tr>'
 
     html_str += ' </table>'
