@@ -7,8 +7,17 @@ import requests
 def laminat33_ru(tag):
     return [ tag.find('span').text , tag.find_next().find_next().find_all('meta')[0].attrs['content'] ]
 
+def laminat_msc_ru(tag):
+    return [tag.find('span').text, tag.find_next().find_next().find_all('meta')[0].attrs['content']] # wrong
+
+def crummy_com(tag):
+    return [ tag.find('span').text , tag.find_next().find_next().find_all('meta')[0].attrs['content'] ]
+
+
 paths = {
-    'laminat33.ru': laminat33_ru
+    'laminat33.ru': laminat33_ru,
+    'crummy.com' : crummy_com,
+    'laminat-msc.ru' : laminat_msc_ru
 }
 
 app = Flask(__name__)
@@ -17,7 +26,10 @@ app = Flask(__name__)
 def index():
 
     key_word = 'Balterio'
-    url = "https://laminat33.ru/category/laminat/balterio/"
+    url = "https://laminat33.ru/category/laminat/balterio/?page = 5"
+
+    # key_word = 'Vinca'
+    # url = "https://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-beautiful-soup"
 
     func = paths [ urlparse(url).netloc.lower() ]
     if not func:
@@ -35,9 +47,9 @@ def index():
 
 
     for tag in need:
-        tg, cprice = func(tag)
-        if tg != None:
-            html_str += '<tr> <td> ' + tg + ' </td> <td>' + cprice + '</td> </tr>'
+        goods, price = func(tag)
+        if goods != None:
+            html_str += '<tr> <td> ' + goods + ' </td> <td>' + price + '</td> </tr>'
 
     html_str += ' </table>'
 
