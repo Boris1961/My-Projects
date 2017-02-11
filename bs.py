@@ -4,8 +4,11 @@ from urllib.parse import urlparse
 import requests
 
 
-def laminat33_ru(tag):
-    return [ tag.find('span').text , tag.find_next().find_next().find_all('meta')[0].attrs['content'] ]
+def laminat33_ru(array=None,tag=None):
+    if tag:
+        return [ tag.find('span').text , tag.find_next().find_next().find_all('meta')[0].attrs['content'] ]
+    if array:
+
 
 def laminat_msc_ru(tag):
     return [tag.find('span').text, tag.find_next().find_next().find_all('meta')[0].attrs['content']] # wrong
