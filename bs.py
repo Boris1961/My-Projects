@@ -4,22 +4,29 @@ from urllib.parse import urlparse
 import requests
 
 
-def laminat33_ru(array=None,tag=None):
+# CSS_selector
+
+def laminat33_ru(soup=None,tag=None):
     if tag:
         return [ tag.find('span').text , tag.find_next().find_next().find_all('meta')[0].attrs['content'] ]
-    if array:
+    if soup:
+        return soup.find_all('h5')
 
 
 def laminat_msc_ru(tag):
     return [tag.find('span').text, tag.find_next().find_next().find_all('meta')[0].attrs['content']] # wrong
 
-def crummy_com(tag):
-    return [ tag.find('span').text , tag.find_next().find_next().find_all('meta')[0].attrs['content'] ]
+def bikeparts_pythonanywhere_com(soup=None,tag=None):
+    if tag:
+        return [ tag.div.div.text + ' ' + tag.div.find('div','b-brand').text,
+                 tag.div.div.next.next.text]
+    if soup:
+        return soup.find_all('div', 'panel panel-default')
 
 
 paths = {
     'laminat33.ru': laminat33_ru,
-    'crummy.com' : crummy_com,
+    'bikeparts.pythonanywhere.com' : bikeparts_pythonanywhere_com,
     'laminat-msc.ru' : laminat_msc_ru
 }
 
@@ -28,11 +35,11 @@ app = Flask(__name__)
 @app.route("/")
 def index():
 
-    key_word = 'Balterio'
-    url = "https://laminat33.ru/category/laminat/balterio/?page = 5"
+    # key_word = 'Balterio'
+    # url = "https://laminat33.ru/category/laminat/balterio/?page=5"
 
-    # key_word = 'Vinca'
-    # url = "https://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-beautiful-soup"
+    key_word = 'Vinca'
+    url = "http://bikeparts.pythonanywhere.com/"
 
     func = paths [ urlparse(url).netloc.lower() ]
     if not func:
@@ -41,7 +48,7 @@ def index():
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    arr = soup.find_all('h5')
+    arr = func(soup=soup)
     need = [tag for tag in arr if tag.text.find(key_word) >= 0]
 
     html_str = '<table width="500" bgcolor="#c0c0c0" cellspacing="0" cellpadding="5" border="1" align="left"> <caption> Товар: '
@@ -50,7 +57,7 @@ def index():
 
 
     for tag in need:
-        goods, price = func(tag)
+        goods, price = func(tag=tag)
         if goods != None:
             html_str += '<tr> <td> ' + goods + ' </td> <td>' + price + '</td> </tr>'
 
