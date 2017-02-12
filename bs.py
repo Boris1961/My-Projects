@@ -1,33 +1,14 @@
-from flask import Flask, request
+from flask import Flask, render_template, request
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 import requests
 
-
 # CSS_selector
 
-def laminat33_ru(soup=None,tag=None):
-    if tag:
-        return [ tag.find('span').text , tag.find_next().find_next().find_all('meta')[0].attrs['content'] ]
-    if soup:
-        return soup.find_all('h5')
-
-
-def laminat_msc_ru(tag):
-    return [tag.find('span').text, tag.find_next().find_next().find_all('meta')[0].attrs['content']] # wrong
-
-def bikeparts_pythonanywhere_com(soup=None,tag=None):
-    if tag:
-        return [ tag.div.div.text + ' ' + tag.div.find('div','b-brand').text,
-                 tag.div.div.next.next.text]
-    if soup:
-        return soup.find_all('div', 'panel panel-default')
-
-
 paths = {
-    'laminat33.ru': laminat33_ru,
-    'bikeparts.pythonanywhere.com' : bikeparts_pythonanywhere_com,
-    'laminat-msc.ru' : laminat_msc_ru
+    'laminat33.ru': ['div.prd-wrapper', 'span[itemprop="name"]', 'span.price'],
+    'bikeparts.pythonanywhere.com' : ['div.panel', 'div.b-title', 'div.b-price'],
+    'laminat-msc.ru' : []
 }
 
 app = Flask(__name__)
@@ -41,15 +22,21 @@ def index():
     key_word = 'Vinca'
     url = "http://bikeparts.pythonanywhere.com/"
 
-    func = paths [ urlparse(url).netloc.lower() ]
-    if not func:
+    try:
+        sel_items, sel_goods, sel_price = paths [ urlparse(url).netloc.lower() ]
+    except KeyError:
         return
 
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    arr = func(soup=soup)
-    need = [tag for tag in arr if tag.text.find(key_word) >= 0]
+    need = [tag for tag in soup.select(sel_items) if tag.text.find(key_word) > 0]
+
+    html_str  = """  '<div class="wa-field wa-field-email">
+                <div class="wa-name"> URL </div>
+                <div class="wa-value">
+                <input type="text" name="url" value=""> </div> </div>'
+                """
 
     html_str = '<table width="500" bgcolor="#c0c0c0" cellspacing="0" cellpadding="5" border="1" align="left"> <caption> Товар: '
     html_str += key_word
@@ -57,16 +44,15 @@ def index():
 
 
     for tag in need:
-        goods, price = func(tag=tag)
-        if goods != None:
-            html_str += '<tr> <td> ' + goods + ' </td> <td>' + price + '</td> </tr>'
+        html_str += '<tr> <td> ' + tag.select(sel_goods)[0].text + ' </td> <td>' + tag.select(sel_price)[0].text + '</td> </tr>'
 
     html_str += ' </table>'
 
     # print(BeautifulSoup(html_str).contents, "html.parser")
 
-    return html_str
-
+    # return html_str
+    list = [ [tag.select(sel_goods)[0].text, tag.select(sel_price)[0].text] for tag in need]
+    return render_template("bs_index.html", key = key_word, list = list)
 
 # @app.route("/names")
 # def nm():
@@ -75,3 +61,4 @@ def index():
 if __name__ == "__main__":
 
     app.run()
+
