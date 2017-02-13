@@ -17,7 +17,7 @@ app = Flask(__name__)
 def index():
     return render_template("inp.html")
 
-@app.route("/search/")
+@app.route("/search/", methods=["post"])
 def search():
 
     key_word = request.form.get("goods")
