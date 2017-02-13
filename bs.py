@@ -15,12 +15,21 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    return render_template("inp.html")
+
+@app.route("/search/")
+def search():
+
+    key_word = request.form.get("goods")
+    url = request.form.get("site")
+
+    print(key_word, url)
 
     # key_word = 'Balterio'
     # url = "https://laminat33.ru/category/laminat/balterio/?page=5"
 
-    key_word = 'Vinca'
-    url = "http://bikeparts.pythonanywhere.com/"
+    # key_word = 'Vinca'
+    # url = "http://bikeparts.pythonanywhere.com/"
 
     try:
         sel_items, sel_goods, sel_price = paths [ urlparse(url).netloc.lower() ]
@@ -51,12 +60,9 @@ def index():
     # print(BeautifulSoup(html_str).contents, "html.parser")
 
     # return html_str
-    list = [ [tag.select(sel_goods)[0].text, tag.select(sel_price)[0].text] for tag in need]
-    return render_template("bs_index.html", key = key_word, list = list)
+    key_list = [ [tag.select(sel_goods)[0].text, tag.select(sel_price)[0].text] for tag in need]
 
-# @app.route("/names")
-# def nm():
-#     return
+    return render_template("bs_index.html", key = key_word, list = key_list)
 
 if __name__ == "__main__":
 
