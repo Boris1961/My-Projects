@@ -4,37 +4,39 @@ from urllib.parse import urlparse
 import requests
 import csv
 
+# CSS_selector
+# tag - тэг содержащий инфо о товаре
+# sel_pos - строка <CSS селектор тэга товарного параметра (название, цена, изображение)>[$$$<имя аттрибута искомого параметра>] >
+# если $$$ отсутствует, значит параметр содержится в .text тэга
+# возвращает строку товарного параметра
+
 def get_pos(tag, sel_pos):
     sel_list = sel_pos.split('$$$')
     return tag.select_one(sel_list[0])[sel_list[1]] if len(sel_list)>1 else tag.select_one(sel_list[0]).text
 
 def get_sites():
-    with open('export.csv', newline='') as csvfile:
-        csvreader = csv.reader(csvfile)
-        arr = [row for row in csvreader]
-    return dict((row[0], [row[1], row[2], row[3], row[4]]) for row in arr)
+    with open('sites.csv', newline='') as f:
+        reader = csv.DictReader(f)
+        dicts = [row for row in reader]
+    return dict((d['key_netloc'], [d['key_pos'], d['key_img'], d['key_goods'], d['key_price']]) for d in dicts)
 
-
-
-# CSS_selector
 
 '''
 
-    Структура момента: {    sel_netloc: # имя(локация) сайта
-                            [   sel_pos # селектор товарной позиции (контейнера)
-                                sel_img # селектор картинки внутри контейнера
-                                sel_goods # селектор наименования внутри контейнера
-                                sel_price # селектор цены внутри контейнера
-                            ]
+    Структура момента: {    key_netloc: <имя(локация) сайта>
+                            key_pos:  <селектор товарной позиции (контейнера)>
+                            key_img:  <селектор картинки внутри контейнера>
+                            key_goods: <селектор наименования внутри контейнера>
+                            key_price: <селектор цены внутри контейнера>
                        }
 
 
 
     sites = {
-        'laminat33.ru': ['div.prd-wrapper', 'img[src]$$$src', 'span[itemprop="name"]', 'span.price'],
-        'bikeparts.pythonanywhere.com' : ['div.panel', '', 'div.b-title', 'div.b-price'],
-        'santehnika-online.ru': ['div[itemprop="itemListElement"]', 'img$$$src', 'div.vidname > a', 'meta[itemprop="price"]$$$content' ],
-        'laminat-msc.ru' : []
+                www.laminat-msc.ru,td > table[cellpadding],img[src]$$$src,"span[itemprop=""name""]",span.catalog-price
+                laminat33.ru,div.prd-wrapper,img[src]$$$src,"span[itemprop=""name""]",span.price
+                santehnika-online.ru,"div[itemprop=""itemListElement""]",img$$$src,div.vidname > a,"meta[itemprop=""price""]$$$content"
+                bikeparts.pythonanywhere.com,div.panel,,div.b-title,div.b-price
             }
 
 '''

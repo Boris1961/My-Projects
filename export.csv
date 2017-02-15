@@ -1,4 +1,0 @@
-laminat-msc.ru,,,,
-laminat33.ru,div.prd-wrapper,img[src]$$$src,"span[itemprop=""name""]",span.price
-santehnika-online.ru,"div[itemprop=""itemListElement""]",img$$$src,div.vidname > a,"meta[itemprop=""price""]$$$content"
-bikeparts.pythonanywhere.com,div.panel,,div.b-title,div.b-price

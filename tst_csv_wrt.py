@@ -1,19 +1,32 @@
 import csv
+
 mydict = {
-    'laminat33.ru': ['div.prd-wrapper', 'img[src]$$$src', 'span[itemprop="name"]', 'span.price'],
-    'bikeparts.pythonanywhere.com' : ['div.panel', '', 'div.b-title', 'div.b-price'],
-    'santehnika-online.ru': ['div[itemprop="itemListElement"]', 'img$$$src', 'div.vidname > a', 'meta[itemprop="price"]$$$content' ],
-    'laminat-msc.ru' : ['', '', '', '']
+        1: {'q': 'w'} ,
+        2: 17 ,
+        3: '1' ,
+        4: 'r'
 }
 
-keys = ['key_netloc',       # имя(локация) сайта
-        'key_pos',          # селектор товарной позиции (контейнера)
-        'key_img',          # селектор картинки внутри контейнера
-        'key_goods',        # селектор наименования внутри контейнера
-        'key_price']  # селектор цены внутри контейнера
+with open('tst_csv_wrt.csv', 'w', newline='') as csvfile:
 
+    writer = csv.DictWriter(csvfile, fieldnames=mydict.keys())
+    writer.writeheader()
+    writer.writerow(mydict)
+    writer.writerow({1:0,2:9,3:8,4:7})
+    writer.writerow({1: 1, 2: 2})
 
-with open('export.csv', 'w', newline='') as output_file:
-    dict_writer = csv.writer(output_file)
-    for key in mydict.keys():
-        dict_writer.writerow([key, mydict[key][0], mydict[key][1], mydict[key][2], mydict[key][3]])
+with open('tst_csv_wrt.csv', newline='') as csvfile:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
+        a = row
+        print(row)
+
+'''
+   www.laminat - msc.ru, td > table[cellpadding], img[src]$$$src, "span[itemprop=""name""]", span.catalog - price
+    laminat33.ru, div.prd - wrapper, img[src]$$$src, "span[itemprop=""name""]", span.price
+    santehnika - online.ru, "div[itemprop=""itemListElement""]", img$$$src, div.vidname > a, "meta[itemprop=""price""]$$$content"
+    bikeparts.pythonanywhere.com, div.panel,, div.b - title, div.b - price
+'''
+
+# print(a.keys())
+# print(type(a['1']))
