@@ -78,7 +78,8 @@ def search():
         need = [tag for tag in soup.select(sel_items) if tag.text.find(key_word)>=0]
 
 
-    key_list = [ [ netloc + get_pos(tag,sel_img) if sel_img else "static/img/Donald-Trump.jpg", # картинка
+    key_list = [ [ netloc if get_pos(tag,sel_img)[:2] != "//" else "" +
+                        get_pos(tag,sel_img) if sel_img else "static/img/Donald-Trump.jpg", # картинка
                    get_pos(tag,sel_goods), # наименование
                    get_pos(tag,sel_price) ] # цена
                  for tag in need ]
