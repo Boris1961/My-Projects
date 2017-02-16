@@ -1,0 +1,6 @@
+key_netloc,key_pos,key_img,key_goods,key_price
+laminat33.ru,div.prd-wrapper,img[src]$$$src,"span[itemprop=""name""]",span.price
+bikeparts.pythonanywhere.com,div.panel,,div.b-title,div.b-price
+santehnika-online.ru,"div[itemprop=""itemListElement""]",img$$$src,div.vidname > a,"meta[itemprop=""price""]$$$content"
+www.laminat-msc.ru,td > table[cellpadding],img[src]$$$src,span.pr_name,span.catalog-price
+www.avito.ru,div.item,img[src]$$$src,h3 > a$$$title,div.about

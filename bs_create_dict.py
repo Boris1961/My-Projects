@@ -24,7 +24,12 @@ sites = [
             'td > table[cellpadding]',
             'img[src]$$$src',
             'span.pr_name',  #вчера ещё было 'span[itemprop="name"]'   !!!!
-            'span.catalog-price']
+            'span.catalog-price'],
+    ['www.avito.ru',
+            'div.item',
+            'img[src]$$$src',
+            'h3 > a$$$title',
+            'div.about']
 
 ]
 

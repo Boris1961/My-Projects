@@ -12,7 +12,10 @@ import csv
 
 def get_pos(tag, sel_pos):
     sel_list = sel_pos.split('$$$')
-    return tag.select_one(sel_list[0])[sel_list[1]] if len(sel_list)>1 else tag.select_one(sel_list[0]).text
+    try:
+        return tag.select_one(sel_list[0])[sel_list[1]] if len(sel_list)>1 else tag.select_one(sel_list[0]).text
+    except:
+        return 'Чёрте что!'
 
 def get_sites():
     with open('sites.csv', newline='') as f:
@@ -45,7 +48,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("inp.html")
+    return render_template("index.html")
 
 @app.route("/search", methods=["post"])
 def search():
@@ -77,14 +80,13 @@ def search():
     else:
         need = [tag for tag in soup.select(sel_items) if tag.text.find(key_word)>=0]
 
-
-    key_list = [ [ netloc if get_pos(tag,sel_img)[:2] != "//" else "" +
-                        get_pos(tag,sel_img) if sel_img else "static/img/Donald-Trump.jpg", # картинка
-                   get_pos(tag,sel_goods), # наименование
-                   get_pos(tag,sel_price) ] # цена
+    key_list = [["static/img/Donald-Trump.jpg" if not sel_img else
+                (netloc+get_pos(tag, sel_img) if get_pos(tag, sel_img)[:2]!="//" else get_pos(tag,sel_img)),
+                get_pos(tag,sel_goods), # наименование
+                get_pos(tag,sel_price)] # цена
                  for tag in need ]
 
-    return render_template("bs_index.html", key = key_word, list = key_list)
+    return render_template("search.html", key = key_word, list = key_list)
 
 '''
     key_list = [ [ netloc+tag.select_one(sel_img)['src'] if sel_img else "static/img/Donald-Trump.jpg", # картинка

@@ -7,3 +7,9 @@ caption {
 {   color: blue;
     font-size: 1000px;
 }
+
+form {
+    font-size: 50px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: green;
+}
