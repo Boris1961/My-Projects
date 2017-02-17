@@ -20,9 +20,8 @@ def get_pos(tag, sel_pos):
 def get_sites():
     with open('sites.csv', newline='') as f:
         reader = csv.DictReader(f)
-        dicts = [row for row in reader]
-    return dict((d['key_netloc'], [d['key_pos'], d['key_img'], d['key_goods'], d['key_price']]) for d in dicts)
-
+        dicts = {d['key_netloc']: [d['key_pos'], d['key_img'], d['key_goods'], d['key_price']] for d in reader}
+    return dicts
 
 '''
 
