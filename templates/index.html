@@ -1,3 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Мой Бьютифул Борщ </title>
+    <link rel="stylesheet" href="static/styles.css">
+
+    <!--    <style type="text/css">
+        input[placeholder] {
+                font-size: 30px;
+                font-family: Verdana, Arial, Helvetica, sans-serif;
+                color: blue;
+                }
+        button {
+                font-size: 30px;
+                font-family: Verdana, Arial, Helvetica, sans-serif;
+                color: red;
+                }
+        p      {
+                font-size: 30px;
+                font-family: Verdana, Arial, Helvetica, sans-serif;
+                color: green;
+                }
+        .div_input {
+                width: 85%;
+                background: #ccc;
+                padding: 5px;
+                padding-right: 2px;
+                border: 1px middle black;
+                float: left;
+                }
+        .method {
+                width: 500px;
+                height: 500px;
+                border: 3px solid black;
+                background: grey;
+                }
+        .photo {
+                padding: 5px;
+                padding-right: 20px;
+                }
+    </style> -->
+
+</head>
+
+<body>
+
+<form method="post" action="/search" class="method">
+        <p> Мой Бьютифул Борщ </p>
+        <img class="photo" itemprop="image" height="200"
+                hspace="5" vspace="7" alt="" align="left"
+                src="static/img/Donald-Trump.jpg">
+        <div class="div_input">
+            <input type="text" name="site" placeholder="На странице">
+            <input type="text" name="goods" placeholder="Товар">
+            <button type="submit"> Найти </button>
+        </div>
+</form>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
 <head>
     <title> Кое-что о товаре </title>
     <link rel="stylesheet" href="static/css/styles.css">
@@ -29,23 +109,23 @@
 </head>
 
 
-<form method="post" action="/search">
+<form method="post" action="/search" class=".photo">
 
-    <div class="photo">
         <img itemprop="image" height="200" title="Чем не товар?"
                 hspace="5" vspace="7" alt="" align="left"
                 src="static/img/Donald-Trump.jpg">
+
         <div class="div_input">
             <input type="text" name="site" placeholder="На сайте">
             <input type="text" name="goods" placeholder="Товар">
             <button type="submit"> Найти </button>
         </div>
-    </div>
+
 
 </form>
 
 
-<!-- <form method="post" action="/search" class="navbar-form navbar-right">
+<form method="post" action="/search" class="navbar-form navbar-right">
     <div class="form-group">
 
 <form method="post" action="/search" width="1500" bgcolor="#c0c0c0">

@@ -58,7 +58,8 @@ def search():
     netloc = urlparse(url).netloc.lower()
 
     sites = get_sites()
-    if sites.get(netloc) == None:
+    if not sites.get(netloc):
+        print('Cайт ' + netloc + ' пока не обработан.')
         key_word = 'Balterio'
         url = "https://laminat33.ru/category/laminat/balterio/?page=5"
         netloc = "laminat33.ru"
@@ -86,7 +87,7 @@ def search():
                 get_pos(tag,sel_price)] # цена
                  for tag in need ]
 
-    return render_template("search.html", key = key_word, list = key_list)
+    return render_template("search.html", key = key_word, list = key_list, page = url)
 
 '''
     key_list = [ [ netloc+tag.select_one(sel_img)['src'] if sel_img else "static/img/Donald-Trump.jpg", # картинка
