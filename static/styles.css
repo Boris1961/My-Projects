@@ -6,11 +6,13 @@ input[placeholder] {
         font-size: 30px;
         font-family: Verdana, Arial, Helvetica, sans-serif;
         color: blue;
+        width: 480px;
         }
 button {
         font-size: 30px;
         font-family: Verdana, Arial, Helvetica, sans-serif;
         color: red;
+        width: 114%;
         }
 p      {
         font-size: 30px;
@@ -25,15 +27,14 @@ p      {
         padding-right: 2px;
         border: 1px middle black;
         background: grey;
-        float: left;
         }
 .method {
         width: 500px;
-        height: 500px;
         border: 3px solid black;
         background: grey;
         }
-.photo {
-        padding: 5px;
-        padding-right: 50px;
+.photo  {
+        width : 100%;
+        margin: 0;
+
         }

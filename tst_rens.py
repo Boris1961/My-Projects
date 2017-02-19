@@ -13,4 +13,4 @@ posts = [ # список выдуманных постов
         }
     ]
 
-print(render_template("index.html", title = 'Home', user = user, posts = posts))
+print(render_template("index_.html", title = 'Home', user = user, posts = posts))

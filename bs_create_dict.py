@@ -51,5 +51,4 @@ with open('sites.csv', 'w', newline='') as output_file:
 
 with open('sites.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
-    for row in reader:
-        print(row)
+    print(list(reader))
