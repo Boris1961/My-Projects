@@ -45,8 +45,18 @@ def get_sites():
 
 app = Flask(__name__)
 
+
+def tst_decor(mes):
+    print(mes, app.view_functions)
+    def decor(fun):
+        def wrap():
+            return fun
+        return wrap
+    return decor
+
+
 @app.route("/")
-def index():
+def my_index():
     return render_template("index.html")
 
 @app.route("/search", methods=["post"])
@@ -87,13 +97,6 @@ def search():
                  for tag in need ]
 
     return render_template("search.html", key = key_word, list = key_list, page = url)
-
-'''
-    key_list = [ [ netloc+tag.select_one(sel_img)['src'] if sel_img else "static/img/Donald-Trump.jpg", # картинка
-                   tag.select_one(sel_goods).text, # наименование
-                   tag.select_one(sel_price).text ] # цена
-                 for tag in need ]
-'''
 
 if __name__ == "__main__":
 
